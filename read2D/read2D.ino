@@ -15,12 +15,20 @@ void setup() {
 }
 
 void loop() {
+  // Serial.write("test\n");
+  
   for (pos = 0; pos <= 90; pos += 1) { //test what 90 degrees we really want 
     upDownServo.write(pos);
     delay(15);
     sensorValue = analogRead(analogInPin);
     calibratedValue = map(sensorValue, 0, 1023, 0, 255);
     sensorVals[pos] = calibratedValue;
+    //Serial.print("sensorValue");
+    Serial.print(sensorValue);
+    Serial.print(';');
+    //Serial.print("pos");
+    Serial.print(pos);
+    Serial.print('\n');
   }
 
   for (pos = 90; pos >= 0; pos -= 1) { //test what 90 degrees we really want 
@@ -29,6 +37,13 @@ void loop() {
     sensorValue = analogRead(analogInPin);
     calibratedValue = map(sensorValue, 0, 1023, 0, 255);
     sensorVals[pos] = calibratedValue;
+    //Serial.print("sensorValue");
+    Serial.print(sensorValue);
+    Serial.print(';');
+    //Serial.print("pos");
+    Serial.print(pos);
+    Serial.print('\n');
   }
-//  Serial.print(sensorVals);
+  
+  // Serial.print(sensorVals[0]);
 }
