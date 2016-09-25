@@ -12,13 +12,14 @@ calibration = {10: 509, 20: 496, 30: 385, 40: 288, 50: 230, 60: 186, 70: 158, 80
 keys, values = zip(*calibration.items())
 
 a, b, c, d = np.polyfit(values, keys, 3)
-print a, b, c, d
+# print a, b, c, d
 
 # x_calibration = np.linspace(0,160,10000)
 # y_calibration = x_calibration*x_calibration*x_calibration*a + x_calibration*x_calibration*b + c*x_calibration + d
 
 # setting up serial port
-ser = serial.Serial('/dev/tty.usbmodem1411')  # open serial port
+ser = serial.Serial('/dev/tty.usbmodem1411', 9600,timeout=5)  # open serial port
+time.sleep(2)
 
 print("connected to: " + ser.portstr)
 
@@ -36,10 +37,14 @@ while datacollection:
     # print data
     # sys.stdout.write(ser.readline())
     # sys.stdout.flush()
-    if (len(data) == 40):
+    if (len(data) == 1):
         datacollection = False
     else:
         pass
+
+data = data[0].split("/")
+data.pop()
+print data
 
 # sensorvals = []
 servovals = []
@@ -56,13 +61,15 @@ for i, datum in enumerate(data):
 
     # taking calibration info and converting sensor value
     # sensorvalue = np.interp(sensorvalue,x_calibration,y_calibration)
-    # print sensorvalue
+    # using angle to find actual distance
+    sensorvalue = sensorvalue*math.cos(math.radians(servovalue))
+
+    print sensorvalue
     sensorvalue = sensorvalue*sensorvalue*sensorvalue*a + sensorvalue*sensorvalue*b + c*sensorvalue + d
     print sensorvalue
 
-    # using angle to find actual distance
-    distance = sensorvalue*math.cos(math.radians(servovalue))
-    distances.append(distance)
+    # print math.radians(servovalue)
+    distances.append(sensorvalue)
     servovals.append(servovalue)
 
 # start = servovals[0]
@@ -77,4 +84,7 @@ for i, datum in enumerate(data):
 
 print servovals
 print distances
+
+plt.plot(distances, 'bo')
+plt.show()
 

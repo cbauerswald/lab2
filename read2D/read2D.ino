@@ -11,6 +11,8 @@ int sensorValue2;
 int sensorValue3;
 int calibratedValue;
 int distance;
+int lowerAngle = 50;
+int higherAngle = 95;
 
 void setup() {
   Serial.begin(9600);
@@ -20,7 +22,7 @@ void setup() {
 void loop() {
   // Serial.write("test\n");
   
-  for (pos = 30; pos <= 70; pos += 1) { //test what 90 degrees we really want 
+  for (pos = lowerAngle; pos <= higherAngle; pos += 1) { //test what 90 degrees we really want 
     upDownServo.write(pos);
     delay(240);
     sensorValue1 = analogRead(analogInPin);
@@ -34,25 +36,25 @@ void loop() {
     Serial.print(';');
     //Serial.print("pos");
     Serial.print(pos-45);
-    Serial.print('\n');
+    Serial.print("/");
   }
-
-  for (pos = 70; pos >= 30; pos -= 1) { //test what 90 degrees we really want 
-    upDownServo.write(pos);
-    delay(240);
-    sensorValue1 = analogRead(analogInPin);
-    sensorValue2 = analogRead(analogInPin);
-    sensorValue3 = analogRead(analogInPin);
-    sensorValue = (sensorValue1 + sensorValue2 + sensorValue3)/3;
-    //calibratedValue = map(sensorValue, 0, 1023, 0, 255);
-    //sensorVals[pos] = calibratedValue;
-    //Serial.print("sensorValue");
-    Serial.print(sensorValue);
-    Serial.print(';');
-    //Serial.print("pos");
-    Serial.print(pos-45);
-    Serial.print('\n');
-  }
-  
+//
+//  for (pos = higherAngle; pos >= lowerAngle; pos -= 1) { //test what 90 degrees we really want 
+//    upDownServo.write(pos);
+//    delay(240);
+//    sensorValue1 = analogRead(analogInPin);
+//    sensorValue2 = analogRead(analogInPin);
+//    sensorValue3 = analogRead(analogInPin);
+//    sensorValue = (sensorValue1 + sensorValue2 + sensorValue3)/3;
+//    //calibratedValue = map(sensorValue, 0, 1023, 0, 255);
+//    //sensorVals[pos] = calibratedValue;
+//    //Serial.print("sensorValue");
+//    Serial.print(sensorValue);
+//    Serial.print(';');
+//    //Serial.print("pos");
+//    Serial.print(pos-45);
+//    Serial.print("/");
+//  }
+  Serial.println();
   // Serial.print(sensorVals[0]);
 }
