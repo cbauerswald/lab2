@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D 
 import numpy as np
 
 import serial
@@ -12,6 +13,10 @@ calibration = {10: 509, 20: 496, 30: 385, 40: 288, 50: 230, 60: 186, 70: 158, 80
 keys, values = zip(*calibration.items())
 
 a, b, c, d = np.polyfit(values, keys, 3)
+
+def sensor_val_to_distance(val):
+    return (val**3)*a + (val**2)*b + val*c + d
+
 # print a, b, c, d
 
 # x_calibration = np.linspace(0,160,10000)
@@ -43,7 +48,9 @@ print data
 # sensorvals = []
 servo_lr_vals = []
 servo_ud_vals = []
-distances = []
+x_distances = []
+y_distances = []
+x_distances = []
 for i, datum in enumerate(data):
     [sensorvalue, servo_up_down, servo_left_right] = datum.split(';')
 
@@ -52,33 +59,38 @@ for i, datum in enumerate(data):
     servo_up_down= int(servo_up_down.rstrip())
     servo_left_right = int(servo_left_right.rstrip)
 
-    # using angle to find actual distance
-    sensor_distance = sensorvalue*math.cos(math.radians(servovalue)) #MAKE THIS MATH 3D
+    updown_angle = math.radians(servo_up_down)
+    leftright_angle = math.radians(servo_left_right)
+
+    # using angles to find actual distance
+    # resource used for spherical coordinates: http://tutorial.math.lamar.edu/Classes/CalcIII/SphericalCoords.aspx
+    x_sensor_distance = sensorvalue * math.sin(updown_angle) * math.cos(leftright_angle)
+    y_sensor_distance = sensorvalue * math.sin(updown_angle) * math.sin(leftright_angle)
+    z_sensor_distance = sensorvalue * math.cos(updown_angle)
 
     print sensor_distance
-    sensorvalue = sensorvalue*sensorvalue*sensorvalue*a + sensorvalue*sensorvalue*b + c*sensorvalue + d
-    distance = (sensor_distance**3)*a + (sensor_distance**2)*b + sensor_distance*c + d
+    x_distance = sensor_val_to_distance(x_sensor_distance)
+    y_distance = sensor_val_to_distance(y_sensor_distance)
+    z_distance = sensor_val_to_distance(z_sensor_distance)
+
     print distance
 
     # print math.radians(servovalue)
-    distances.append(distance)
+    x_distances.append(x_distance)
+    y_distances.append(y_distance)
+    x_distances.append(z_distance)
+
     servo_lr_vals.append(servo_left_right)
     servo_ud_vals.append(servo_up_down)
-
-# start = servovals[0]
-# print start
-# print servovals[9:].index(start)
-# print servovals[:41]
-# print servovals[41:82]
-# for i, servovalue in enumerate(servovals):
-#     l = ['a',' b',' c',' d',' e']
-# c_index = l.index("c")
-# l2 = l[:c_index]
 
 print servo_lr_vals
 print servo_ud_vals
 print distances
 
-plt.plot(distances, 'bo')
+# http://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d', rstride=4, cstride=4, color='b') 
+ax.plot_surface(x_distances, y_distances, z_distances)
 plt.show()
 
