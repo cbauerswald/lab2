@@ -25,7 +25,7 @@ test_distances = ["186;49;5/169;50;5/523;5;10/515;6;10/511;7;10/498;8;10/481;9;1
 
 data = test_distances[0].split("/")
 data.pop()
-print data
+#print data
 
 
 servo_lr_vals = []
@@ -48,7 +48,8 @@ for i, datum in enumerate(data):
     distance = sensor_val_to_distance(sensorvalue)
     distances.append(distance)
 
-    print distances
+   # print distances
+   # print servo_lr_vals
 
 #     # using angles to find actual distance
 #     # resource used for spherical coordinates: http://tutorial.math.lamar.edu/Classes/CalcIII/SphericalCoords.aspx
@@ -72,10 +73,75 @@ for i, datum in enumerate(data):
     servo_ud_vals.append(servo_up_down)
 
 
+servo_ud_vals = servo_ud_vals[11:]
+servo_lr_vals = servo_lr_vals[11:]
+distances = distances[11:]
 
-# plt.plot(x_distances)
+
+
+
+
+
+import numpy as np
+import scipy.interpolate as interp
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+X = servo_lr_vals
+Y = servo_ud_vals
+Z = distances
+
+# plotx,ploty, = np.meshgrid(np.linspace(np.min(X),np.max(X),10),\
+#                            np.linspace(np.min(Y),np.max(Y),10))
+# plotz = interp.griddata((X,Y),Z,(plotx,ploty),method='linear')
+
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.plot_surface(plotx,ploty,plotz,cstride=1,rstride=1,cmap='viridis')
+#plt.show()
+
+
+X=np.unique(X)
+Y=np.unique(Y)
+x,y = np.meshgrid(X,Y)
+print len(Y)
+print len(X)
+
+Z = np.array(Z)
+
+z=Z.reshape(len(Y),len(X))
+
+plt.pcolormesh(x,y,z)
+
+plt.show()
+
+
+# x = np.arange(0,11)
+# y = np.arange(0,11)
+# xv, yv = np.meshgrid(x,y)
+# print xv
+# print yv
+# c = np.random.rand(10,10)
+# print c
+
+# plt.pcolormesh(xv,yv,c)
+
 # plt.show()
 
+#x,y = np.meshgrid(servo_lr_vals,servo_ud_vals)
+# print x 
+# print len(y)
+# c = np.random.rand(471,471)
+# print c
+
+# c1,c2 = np.meshgrid(distances,distances)
+# c = zip(c1,c2)
+
+# plt.pcolormesh(x, y, c)
+# plt.show()
+
+# plt.plot(servo_lr_vals,servo_ud_vals)
+# plt.show()
 
 # print x_distances
 # print y_distances
