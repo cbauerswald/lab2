@@ -1,9 +1,10 @@
 #include <Servo.h>
 Servo upDownServo;
 Servo leftRightServo;
-int pos = 0;
+int posLR = 0;
+int posUD = 0;
 int upDownServoPin = 11;
-int leftRightServoPin = 12;
+int leftRightServoPin = 10;
 
 const int analogInPin = A0;
 
@@ -25,9 +26,12 @@ void setup() {
 
 void loop() {
   //sweep over each left-right position in a predetermined range NOTE: the distance range at which the object can be scanned should be noted here
-  for (posLR = lowerAngleLR; posLR <= higherAngleLR; posLR += 1) { //test what 90 degrees we really want 
+  for (posLR = lowerAngleLR; posLR <= higherAngleLR; posLR += 5) { //test what degrees we really want 
     
     leftRightServo.write(posLR);
+    delay(240);
+    //Serial.print("POSLR");
+    //Serial.print(posLR);
 
     //for each left-right servo position, do an updown servo scan
     for (posUD = lowerAngleUD; posUD <= higherAngleUD; posUD += 1) {

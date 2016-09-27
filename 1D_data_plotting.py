@@ -5,4 +5,44 @@ distances_right = [35.18063976029373, 35.05227173011798, 35.907364707708496, 36.
 distances_left = [35.758144193665487, 36.312360593062408, 36.34496347715708, 36.102614117403789, 36.460600197389454, 36.395346577735722, 36.226047629681261, 36.166090797294771, 36.242218829516105, 36.189609855699132, 36.287742707203165, 36.133108127168271, 36.321024673904049, 36.340485457994589, 36.361630787840454, 36.332662082029799, 36.470068234617429, 36.549834024764834, 36.559527550056146, 36.543934601218098, 36.719882292770194, 36.889546936991223, 36.982821371805244, 45.265494043978549, 91.466082097012702, 97.511003075014202, 95.134220976507265, 60.218265305221735, 38.320501162088192, 37.748277181565527, 37.875581743097598, 37.77906071824458, 38.807295670375595, 39.030062737963362, 39.482654429806587, 39.770854722135141, 40.759836560475549, 43.197116335630596, 50.031485153765118, 68.470695231545022, 121.0060091676134, 126.59445756965195, 128.0772462150403, 128.91593790603696, 135.31399902160135, 163.23236450239227]
 
 plt.plot(distances_middle, 'bo')
+plt.title("2D Sensor Output for Middle of Letter")
+plt.xlabel("Height")
+plt.ylabel("Distance (cm)")
 plt.show()
+
+plt.plot(distances_right, 'bo')
+plt.title("2D Sensor Output for Right of Letter")
+plt.xlabel("Height")
+plt.ylabel("Distance (cm)")
+plt.show()
+
+plt.plot(distances_left, 'bo')
+plt.title("2D Sensor Output for Left of Letter")
+plt.xlabel("Height")
+plt.ylabel("Distance (cm)")
+plt.show()
+
+
+def rework_plot(lst,num):
+    high_lst = []
+    for i, distance in enumerate(lst):
+        if distance > 60:
+            high_lst.append((i,num))
+        else:
+            pass
+    return high_lst
+
+
+left = zip(*rework_plot(distances_left,0))
+middle = zip(*rework_plot(distances_middle,1))
+right = zip(*rework_plot(distances_right,2))
+
+plt.scatter(left[1],left[0])
+plt.scatter(middle[1],middle[0])
+plt.scatter(right[1],right[0])
+plt.xticks([-2,-1,0,1,2,3,4])
+plt.title("All 2D Sensor Output")
+plt.xlabel("Left-Right Direction")
+plt.ylabel("Height")
+plt.show()
+
