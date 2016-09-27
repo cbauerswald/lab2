@@ -50,14 +50,14 @@ servo_lr_vals = []
 servo_ud_vals = []
 x_distances = []
 y_distances = []
-x_distances = []
+z_distances = []
 for i, datum in enumerate(data):
     [sensorvalue, servo_up_down, servo_left_right] = datum.split(';')
 
     # converting to int and removing new lines
     sensorvalue = int(sensorvalue)
     servo_up_down= int(servo_up_down.rstrip())
-    servo_left_right = int(servo_left_right.rstrip)
+    servo_left_right = int(servo_left_right.rstrip())
 
     updown_angle = math.radians(servo_up_down)
     leftright_angle = math.radians(servo_left_right)
@@ -68,29 +68,34 @@ for i, datum in enumerate(data):
     y_sensor_distance = sensorvalue * math.sin(updown_angle) * math.sin(leftright_angle)
     z_sensor_distance = sensorvalue * math.cos(updown_angle)
 
-    print sensor_distance
+    # print sensor_distance
     x_distance = sensor_val_to_distance(x_sensor_distance)
     y_distance = sensor_val_to_distance(y_sensor_distance)
     z_distance = sensor_val_to_distance(z_sensor_distance)
 
-    print distance
+    # print distance
 
     # print math.radians(servovalue)
     x_distances.append(x_distance)
     y_distances.append(y_distance)
-    x_distances.append(z_distance)
+    z_distances.append(z_distance)
 
     servo_lr_vals.append(servo_left_right)
     servo_ud_vals.append(servo_up_down)
 
 print servo_lr_vals
 print servo_ud_vals
-print distances
+# print distances
 
 # http://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d', rstride=4, cstride=4, color='b') 
-ax.plot_surface(x_distances, y_distances, z_distances)
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(x_distances, y_distances, z_distances)
 plt.show()
+
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d', rstride=4, cstride=4) 
+# ax.plot_surface(x_distances, y_distances, z_distances)
+# plt.show()
 

@@ -23,16 +23,6 @@ plt.ylabel("Distance (cm)")
 plt.show()
 
 
-# def rework(lst,num):
-#     new_lst = []
-#     for distance in lst:
-#         if distance > 60:
-#             print "test"
-#             new_lst.append(1)
-#         else:
-#             new_lst.append(0)
-#     return new_lst
-
 def rework_plot(lst,num):
     high_lst = []
     for i, distance in enumerate(lst):
@@ -47,10 +37,6 @@ left = zip(*rework_plot(distances_left,0))
 middle = zip(*rework_plot(distances_middle,1))
 right = zip(*rework_plot(distances_right,2))
 
-# low = zip(*rework_plot(rework(distances_left,0))[1])
-# middle = zip(*rework_plot(rework(distances_middle,1))[1])
-# high = zip(*rework_plot(rework(distances_right,2))[1])
-# print low
 plt.scatter(left[1],left[0])
 plt.scatter(middle[1],middle[0])
 plt.scatter(right[1],right[0])
@@ -60,7 +46,3 @@ plt.xlabel("Left-Right Direction")
 plt.ylabel("Height")
 plt.show()
 
-#plt.scatter(zip(*rework_plot(rework(distances_middle,"middle"))[0]))
-#plt.show()
-# print rework(distances_left,"left")
-# print rework(distances_right,"right")
