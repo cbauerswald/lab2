@@ -23,8 +23,8 @@ keys_test, values_test = zip(*calibration_test.items())
 plt.plot(values_test,keys_test,'ro')
 
 plt.title("Sensor Value to Distance (cm) Calibration Test")
-plt.xlabel("Distance (cm)")
-plt.ylabel("Sensor Output Value")
+plt.ylabel("Distance (cm)")
+plt.xlabel("Sensor Output Value")
 legend = plt.legend(['Calibration Values', 'Fit Curve', 'Test Values'])
 legend.get_frame().set_linewidth(0.0)
 
